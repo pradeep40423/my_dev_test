@@ -1,4 +1,4 @@
-import { Container, Paper, Typography, Button, Box } from '@mui/material';
+import { Box, Button, Card, CardContent, Container, Divider, Stack, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '../components/ToastProvider';
 
@@ -13,24 +13,51 @@ const Dashboard = () => {
   };
 
   return (
-    <Container maxWidth="md" sx={{ py: 8 }}>
-      <Paper elevation={3} sx={{ padding: 4, textAlign: 'center' }}>
-        <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', mb: 2 }}>
-          Profile
-        </Typography>
-        <Typography variant="body1" color="textSecondary" sx={{ mb: 4 }}>
-          You are logged in. Manage your account session from here.
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Button variant="outlined" onClick={() => navigate('/')}>
-            Back to Home
-          </Button>
-          <Button variant="contained" color="error" onClick={handleLogout}>
-            Logout
-          </Button>
-        </Box>
-      </Paper>
-    </Container>
+    <Box
+      sx={{
+        minHeight: '100vh',
+        py: { xs: 4, md: 8 },
+        background: 'linear-gradient(180deg, #f6f8fb 0%, #eef2f7 100%)',
+      }}
+    >
+      <Container maxWidth="md">
+        <Card elevation={2}>
+          <CardContent sx={{ p: { xs: 3, md: 4 } }}>
+            <Stack spacing={3}>
+              <Box>
+                <Typography variant="overline" color="text.secondary" sx={{ letterSpacing: 1.2 }}>
+                  ACCOUNT
+                </Typography>
+                <Typography variant="h4" sx={{ fontWeight: 700, mt: 0.5 }}>
+                  Dashboard
+                </Typography>
+                <Typography color="text.secondary" sx={{ mt: 1 }}>
+                  You are signed in. Use the actions below to continue working.
+                </Typography>
+              </Box>
+
+              <Divider />
+
+              <Stack spacing={1.2}>
+                <Typography variant="subtitle2" color="text.secondary">
+                  Session Status
+                </Typography>
+                <Typography variant="body1">Active and authenticated</Typography>
+              </Stack>
+
+              <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1.5}>
+                <Button variant="outlined" onClick={() => navigate('/')}>
+                  Back to Home
+                </Button>
+                <Button variant="contained" color="error" onClick={handleLogout}>
+                  Logout
+                </Button>
+              </Stack>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
   );
 };
 

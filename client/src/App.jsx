@@ -6,12 +6,6 @@ import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Dashboard from './pages/Dashboard';
-import WarehouseManufacturing from './pages/solutions/WarehouseManufacturing';
-import SpidexPlatform from './pages/solutions/SpidexPlatform';
-import AgileErp from './pages/solutions/AgileErp';
-import SapConsulting from './pages/services/SapConsulting';
-import EcommerceDevelopment from './pages/services/EcommerceDevelopment';
-import StrategicResourcing from './pages/services/StrategicResourcing';
 
 const theme = createTheme({
   palette: {
@@ -48,12 +42,6 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/solutions/warehouse-manufacturing" element={<WarehouseManufacturing />} />
-            <Route path="/solutions/spidex-platform" element={<SpidexPlatform />} />
-            <Route path="/solutions/agile-erp" element={<AgileErp />} />
-            <Route path="/services/sap-consulting" element={<SapConsulting />} />
-            <Route path="/services/ecommerce-development" element={<EcommerceDevelopment />} />
-            <Route path="/services/strategic-resourcing" element={<StrategicResourcing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route
