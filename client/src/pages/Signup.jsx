@@ -25,6 +25,26 @@ const Signup = () => {
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  const generatePassword = () => {
+    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*';
+    let generated = '';
+    for (let i = 0; i < 12; i += 1) {
+      generated += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+
+    setFormData(prev => ({
+      ...prev,
+      password: generated,
+      confirmPassword: generated,
+    }));
+    setErrors(prev => ({
+      ...prev,
+      password: '',
+      confirmPassword: '',
+    }));
+    showToast('A secure password was generated for you.', 'info');
+  };
+
   const validateForm = () => {
     const newErrors = {};
 
@@ -157,6 +177,10 @@ const Signup = () => {
             margin="normal"
             placeholder="••••••••"
           />
+
+          <Button variant="text" onClick={generatePassword} sx={{ mt: 1 }}>
+            Auto Generate Password
+          </Button>
 
           <TextField
             fullWidth

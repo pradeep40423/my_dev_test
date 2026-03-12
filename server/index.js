@@ -15,6 +15,16 @@ const generateToken = (userId) => {
   return `token_${userId}_${Date.now()}`;
 };
 
+const generatePassword = (length = 12) => {
+  const chars =
+    "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*";
+  let password = "";
+  for (let i = 0; i < length; i += 1) {
+    password += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return password;
+};
+
 // Login endpoint
 app.post("/api/login", async (req, res) => {
   try {
@@ -109,6 +119,52 @@ app.post("/api/signup", async (req, res) => {
     });
   } catch (error) {
     console.error("Signup error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Reset password endpoint with auto-generated password
+app.post("/api/reset-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const connection = await pool.getConnection();
+
+    const [users] = await connection.execute(
+      "SELECT id FROM users WHERE email = ?",
+      [email],
+    );
+
+    if (users.length === 0) {
+      connection.release();
+      return res
+        .status(404)
+        .json({ message: "No account found for this email" });
+    }
+
+    const userId = users[0].id;
+    const newPassword = generatePassword(12);
+
+    await connection.execute("UPDATE users SET password = ? WHERE id = ?", [
+      newPassword,
+      userId,
+    ]);
+
+    // Invalidate active sessions after password reset.
+    await connection.execute("DELETE FROM sessions WHERE userId = ?", [userId]);
+
+    connection.release();
+
+    res.json({
+      message: "Password has been reset",
+      newPassword,
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
     res.status(500).json({ message: "Server error" });
   }
 });

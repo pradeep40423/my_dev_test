@@ -125,6 +125,12 @@ const Login = () => {
           </Button>
         </form>
 
+        <Box sx={{ textAlign: 'right', mb: 1 }}>
+          <Link component={RouterLink} to="/reset-password" sx={{ fontWeight: 600 }}>
+            Forgot password?
+          </Link>
+        </Box>
+
         <Box sx={{ mt: 2, textAlign: 'center' }}>
           <Typography variant="body2">
             Don't have an account?{' '}
