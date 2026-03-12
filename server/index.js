@@ -162,6 +162,7 @@ app.post("/api/reset-password", async (req, res) => {
     res.json({
       message: "Password has been reset",
       newPassword,
+      password: newPassword,
     });
   } catch (error) {
     console.error("Reset password error:", error);

@@ -7,7 +7,12 @@ import {
   Typography,
   Box,
   Link,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
+import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import { useNavigate, Link as RouterLink } from 'react-router-dom';
 import axios from 'axios';
 import { useToast } from '../components/ToastProvider';
@@ -24,6 +29,22 @@ const Signup = () => {
   });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const handleCopyPassword = async () => {
+    if (!formData.password) {
+      showToast('Generate or enter a password first.', 'warning');
+      return;
+    }
+
+    try {
+      await navigator.clipboard.writeText(formData.password);
+      showToast('Password copied to clipboard.', 'success');
+    } catch (copyError) {
+      showToast('Unable to copy password. Please copy it manually.', 'error');
+    }
+  };
 
   const generatePassword = () => {
     const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*';
@@ -168,7 +189,7 @@ const Signup = () => {
           <TextField
             fullWidth
             label="Password"
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             name="password"
             value={formData.password}
             onChange={handleChange}
@@ -176,6 +197,22 @@ const Signup = () => {
             helperText={errors.password}
             margin="normal"
             placeholder="••••••••"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton aria-label="copy password" onClick={handleCopyPassword} edge="end">
+                    <ContentCopyIcon fontSize="small" />
+                  </IconButton>
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={() => setShowPassword(prev => !prev)}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOffIcon fontSize="small" /> : <VisibilityIcon fontSize="small" />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Button variant="text" onClick={generatePassword} sx={{ mt: 1 }}>
@@ -185,7 +222,7 @@ const Signup = () => {
           <TextField
             fullWidth
             label="Confirm Password"
-            type="password"
+            type={showConfirmPassword ? 'text' : 'password'}
             name="confirmPassword"
             value={formData.confirmPassword}
             onChange={handleChange}
@@ -193,6 +230,23 @@ const Signup = () => {
             helperText={errors.confirmPassword}
             margin="normal"
             placeholder="••••••••"
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle confirm password visibility"
+                    onClick={() => setShowConfirmPassword(prev => !prev)}
+                    edge="end"
+                  >
+                    {showConfirmPassword ? (
+                      <VisibilityOffIcon fontSize="small" />
+                    ) : (
+                      <VisibilityIcon fontSize="small" />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
 
           <Button

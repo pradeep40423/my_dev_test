@@ -32,6 +32,7 @@ const ResetPassword = () => {
     e.preventDefault();
     const validationError = validateEmail(email);
     setError(validationError);
+    setNewPassword('');
 
     if (validationError) {
       showToast('Please enter a valid email address.', 'warning');
@@ -44,7 +45,14 @@ const ResetPassword = () => {
         email,
       });
 
-      setNewPassword(response.data.newPassword || '');
+      const generatedPassword = response.data.newPassword || response.data.password || '';
+      setNewPassword(generatedPassword);
+
+      if (!generatedPassword) {
+        showToast('Password was reset, but no generated password was returned.', 'warning');
+        return;
+      }
+
       showToast('Password regenerated successfully.', 'success');
     } catch (requestError) {
       showToast(
