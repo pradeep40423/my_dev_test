@@ -1,0 +1,20 @@
+{
+  "name": "openspaceinnovates",
+  "private": true,
+  "scripts": {
+    "client": "npm --prefix client start",
+    "server": "npm --prefix server start",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
+  },
+  "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.9",
+    "@mui/material": "^7.3.9",
+    "axios": "^1.13.6",
+    "react-router-dom": "^7.13.1"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
